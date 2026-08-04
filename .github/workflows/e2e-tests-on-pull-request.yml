@@ -21,7 +21,9 @@ jobs:
           runCmd: |
             make install --always-make
             
-            make start --always-make --ignore-errors &
+            make start --always-make --ignore-errors
+
+            curl http://localhost:2616
           push: never
 
       - name: Check OpenNebula health
