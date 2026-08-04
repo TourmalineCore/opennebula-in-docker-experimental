@@ -21,8 +21,11 @@ jobs:
           runCmd: |
             make install --always-make
             
-            make start --always-make --ignore-errors
+            make start --always-make --ignore-errors &
           push: never
+
+      - name: Check OpenNebula health
+        run: curl http://localhost:2616
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
