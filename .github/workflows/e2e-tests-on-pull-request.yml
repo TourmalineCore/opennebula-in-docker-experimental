@@ -4,13 +4,13 @@ on:
   push:
 
 jobs:
-  install-cypress:
-    uses: ./.github/workflows/.reusable-install-cypress.yml
+  # install-cypress:
+  #   uses: ./.github/workflows/.reusable-install-cypress.yml
 
   e2e-tests:
     runs-on: ubuntu-24.04
-    needs:
-      - install-cypress
+    # needs:
+    #   - install-cypress
     steps:
       - name: Checkout
         uses: actions/checkout@v4
