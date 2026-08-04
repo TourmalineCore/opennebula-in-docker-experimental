@@ -5,7 +5,8 @@
 	},
 	"forwardPorts": [
 		6080,
-		5901
+		5901,
+		2616
 	],
 	"runArgs": [
 		// "--network=host",
