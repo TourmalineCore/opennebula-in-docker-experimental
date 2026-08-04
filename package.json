@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:open:e2e": "cypress open --e2e --browser electron",
+    "cypress:run:e2e": "cypress run --e2e"
+  },
+  "devDependencies": {
+    "cypress": "^15.19.0"
+  }
+}
