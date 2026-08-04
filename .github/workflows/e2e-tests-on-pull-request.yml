@@ -23,6 +23,8 @@ jobs:
             
             make start --always-make --ignore-errors
 
+            sleep 20
+
             curl http://localhost:2616
           push: never
 
