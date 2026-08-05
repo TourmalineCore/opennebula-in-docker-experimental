@@ -31,6 +31,9 @@ jobs:
       - name: Check OpenNebula health
         run: |
           docker ps -a
+          CID=$(docker ps -q)
+          docker port "$CID" || true
+          docker inspect "$CID" --format '{{json .NetworkSettings.Ports}}'
           curl http://localhost:2616
 
       - name: Cypress run e2e tests
