@@ -23,22 +23,21 @@ jobs:
             
             make start --always-make --ignore-errors
 
-            sleep 20
-
-            curl http://localhost:2616
           push: never
 
-      - name: Check OpenNebula health
+      - name: Get OpenNebula IP
         run: |
           CID=$(docker ps -q)
           IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$CID")
-          curl -v "http://$IP:2616"
+          echo "OPENNEBULA_IP=$IP" >> "$GITHUB_ENV"
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
         with:
-          wait-on: "http://localhost:2616"
+          wait-on: "http://${{ env.OPENNEBULA_IP }}:2616"
           browser: electron
+        env:
+          CYPRESS_BASE_URL: http://${{ env.OPENNEBULA_IP }}:2616
 
       - name: Upload videos of tests failed
         uses: actions/upload-artifact@v4
