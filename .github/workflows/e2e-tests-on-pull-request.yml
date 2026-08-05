@@ -32,6 +32,7 @@ jobs:
         run: |
           docker ps -a
           CID=$(docker ps -q)
+          docker exec "$CID" curl -I http://localhost:2616
           docker port "$CID" || true
           docker inspect "$CID" --format '{{json .NetworkSettings.Ports}}'
           curl http://localhost:2616
