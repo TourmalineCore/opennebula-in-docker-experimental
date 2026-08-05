@@ -1,0 +1,16 @@
+import { defineConfig } from "cypress"
+
+export default defineConfig({
+  e2e: {
+    specPattern: `cypress/e2e/**/*.cy.ts`,
+    baseUrl: "https://google.com",
+    setupNodeEvents(on, config) {
+      // implement node event listeners here
+    },
+    env: {
+      ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+    },
+    video: true,
+    screenshotOnRunFailure: true,
+  },
+})

@@ -2,9 +2,12 @@
   "scripts": {
     "cypress:open": "cypress open",
     "cypress:open:e2e": "cypress open --e2e --browser electron",
-    "cypress:run:e2e": "cypress run --e2e"
+    "cypress:run:e2e": "cypress run --e2e",
+    "cypress:open:e2e:local-env": "cypress open --e2e --browser electron --config-file cypress.config.local-env.ts",
+    "cypress:run:e2e:local-env": "cypress run --e2e --config-file cypress.config.local-env.ts"
   },
   "devDependencies": {
-    "cypress": "^15.19.0"
+    "cypress": "^14.2.0",
+    "typescript": "^5.9.3"
   }
 }

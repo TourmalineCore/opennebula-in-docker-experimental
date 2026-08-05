@@ -1,18 +1,16 @@
-const { defineConfig } = require("cypress");
+import { defineConfig } from "cypress"
 
-module.exports = defineConfig({
-  allowCypressEnv: false,
-
+export default defineConfig({
   e2e: {
-    specPattern: `cypress/e2e/**/*.cy.js`,
+    specPattern: `cypress/e2e/**/*.cy.ts`,
     baseUrl: process.env.CYPRESS_BASE_URL,
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
     env: {
       ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
-      video: true,
     },
+    video: true,
+    screenshotOnRunFailure: true,
   },
-
-});
+})
