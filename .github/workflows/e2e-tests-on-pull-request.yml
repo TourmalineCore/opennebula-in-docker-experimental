@@ -29,7 +29,9 @@ jobs:
           push: never
 
       - name: Check OpenNebula health
-        run: curl http://localhost:2616
+        run: |
+          docker ps -a
+          curl http://localhost:2616
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
