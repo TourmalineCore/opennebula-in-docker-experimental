@@ -1,4 +1,4 @@
-FROM cypress/browsers:node-22.18.0-chrome-138.0.7204.183-1-ff-141.0-edge-138.0.3351.121-1
+FROM ubuntu:24.04
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -12,12 +12,6 @@ RUN apt-get update \
     && rm -Rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
     && apt-get clean
-
-# OpenNebula Fireedge requires NodeJS 20
-RUN mkdir -p /opt/node20 \
- && curl -fsSL https://nodejs.org/dist/v20.19.5/node-v20.19.5-linux-x64.tar.xz -o /tmp/node20.tar.xz \
- && tar -xJf /tmp/node20.tar.xz --strip-components=1 -C /opt/node20 \
- && rm /tmp/node20.tar.xz
 
 RUN sed -i 's/^\($ModLoad imklog\)/#\1/' /etc/rsyslog.conf
 
@@ -44,16 +38,16 @@ RUN apt-get update \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
     && apt-get clean
 
-# RUN mkdir -p /etc/apt/keyrings \
-#  && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
-#  | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+RUN mkdir -p /etc/apt/keyrings \
+ && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+ | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 
-# RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" \
-#  > /etc/apt/sources.list.d/nodesource.list
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" \
+ > /etc/apt/sources.list.d/nodesource.list
 
-# RUN apt-get update \
-#  && apt-get install -y nodejs \
-#  && npm install -g typescript
+RUN apt-get update \
+ && apt-get install -y nodejs \
+ && npm install -g typescript
 
 RUN sed -i 's/^\($ModLoad imklog\)/#\1/' /etc/rsyslog.conf
 
@@ -61,6 +55,19 @@ RUN sed -i 's/^\($ModLoad imklog\)/#\1/' /etc/rsyslog.conf
 # https://github.com/ansible-community/molecule/issues/1104
 RUN rm -f /lib/systemd/system/systemd*udev* \
     && rm -f /lib/systemd/system/getty.target
+
+RUN apt-get update \
+    && apt-get -y install gnupg wget apt-transport-https \
+    && wget -q -O- https://downloads.opennebula.io/repo/repo2.key | gpg --dearmor --yes --output /etc/apt/keyrings/opennebula.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/opennebula.gpg] https://downloads.opennebula.io/repo/7.0/Ubuntu/24.04 stable opennebula" > /etc/apt/sources.list.d/opennebula.list \
+	&& apt-get update
+
+RUN mkdir -p /run/lock \
+	&& chmod 777 /run/lock
+
+RUN apt install -y logrotate \
+	&& apt-get -y install opennebula opennebula-fireedge opennebula-gate opennebula-flow opennebula-node-kvm \
+	&& sudo usermod -aG libvirt,kvm,sgx oneadmin
 
 STOPSIGNAL SIGRTMIN+3
 

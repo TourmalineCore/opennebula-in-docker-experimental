@@ -2,13 +2,15 @@ import { defineConfig } from "cypress"
 
 export default defineConfig({
   e2e: {
+    experimentalStudio:true,
     specPattern: `cypress/e2e/**/*.cy.ts`,
-    baseUrl: "https://google.com",
+    baseUrl: "http://localhost:2616",
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
     env: {
-      ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+      USER_LOGIN: "oneadmin",
+      USER_PASSWORD: "admin"
     },
     video: true,
     screenshotOnRunFailure: true,

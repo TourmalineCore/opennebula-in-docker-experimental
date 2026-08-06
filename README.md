@@ -1,12 +1,5 @@
 # opennebula-in-docker-experimental
 
-## Installation
-
-To install OpenNebula execute the following command:
-```bash
-make install --always-make
-```
-
 ## Starting Up
 
 To start OpenNebula execute the following command:
@@ -25,20 +18,15 @@ ssh-keygen -t ed25519 -f ./vm-key
 This key will be used to connect to the created VM
 
 
-Get password and copy it
-```bash
-cat /var/lib/one/.one/one_auth | sed 's/^[^:]*://'
-```
+## Creating a VM
 
-Open `https://localhost:2616` and login as `oneadmin` with copied password
+Open `https://localhost:2616` and login as `oneadmin` with `admin` password
 
 ![](images/login.png)
 
 Go to the `Settings` -> `Security`
 
 Copy created SSH key from vm-key.pub and paste it to `SSH public key`
-
-## Creating a VM
 
 ### Creating a new host
 
@@ -52,7 +40,7 @@ Click `Next` and select `default` cluster
 
 ### Creating a new image
 
-Go to `Infrastructure` -> `Storage` -> `Images` -> `Create`  
+Go to `Storage` -> `Images` -> `Create`  
 Specify the name (e.g. `Ubuntu 24.04 Server Image`)  
 Type - `Operating system image`  
 Path/Url - `https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-amd64.img`  
@@ -90,7 +78,7 @@ Custom Attributes -> `BRIDGE_TYPE` `linux`
 ![](images/network-5.png)
 Click `Finish`
 
-### Creating a VM template
+### Creating a VM template and VM
 
 Go to `Templates` -> `VM Templates` -> `Create`
 

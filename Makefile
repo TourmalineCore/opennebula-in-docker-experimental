@@ -5,7 +5,7 @@ install:
 
 	wget -q -O- https://downloads.opennebula.io/repo/repo2.key | gpg --dearmor --yes --output /etc/apt/keyrings/opennebula.gpg
 
-	echo "deb [signed-by=/etc/apt/keyrings/opennebula.gpg] https://downloads.opennebula.io/repo/7.4/Debian/12/ stable opennebula" > /etc/apt/sources.list.d/opennebula.list
+	echo "deb [signed-by=/etc/apt/keyrings/opennebula.gpg] https://downloads.opennebula.io/repo/7.4/Ubuntu/24.04 stable opennebula" > /etc/apt/sources.list.d/opennebula.list
 	apt-get update
 
 
@@ -64,7 +64,9 @@ start:
 
 	python3 systemctl3.py start opennebula-guacd
 	
-	# Use node 20 to run fireedge
-	sed -i 's|exec node |exec /opt/node20/bin/node |' /lib/systemd/system/opennebula-fireedge.service
+# 	# Use node 20 to run fireedge
+# 	sed -i 's|exec node |exec /usr/bin/node |' /lib/systemd/system/opennebula-fireedge.service
 
 	python3 systemctl3.py start opennebula-fireedge
+
+	oneuser passwd oneadmin admin && echo oneadmin:admin > /var/lib/one/.one/one_auth
