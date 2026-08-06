@@ -8,7 +8,8 @@ export default defineConfig({
       // implement node event listeners here
     },
     env: {
-      ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+      USER_LOGIN: process.env.USER_LOGIN,
+      USER_PASSWORD: process.env.USER_PASSWORD
     },
     video: true,
     screenshotOnRunFailure: true,

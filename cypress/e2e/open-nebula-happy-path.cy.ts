@@ -4,8 +4,8 @@ it('Create Host, Image, Network, VM Template and VM', function() {
 
   /* ==== Auth ==== */
   cy.visit('/fireedge/sunstone');
-  cy.get('[data-cy="login-user"]').type("oneadmin");
-  cy.get('[data-cy="login-token"]').type("admin");
+  cy.get('[data-cy="login-user"]').type(`${Cypress.env('USER_LOGIN')}`);
+  cy.get('[data-cy="login-token"]').type(`${Cypress.env('USER_PASSWORD')}`);
   cy.get('[data-cy="login-button"]').click();
 
   /* ==== Host ==== */

@@ -9,6 +9,17 @@ make start --always-make --ignore-errors
 
 > `--ignore-errors` flag was added because `python3 systemctl3.py start opennebula` fails, but OpenNebula works fine
 
+## E2E tests
+Execute the following command to install needed dependencies:
+```
+npm ci
+```
+
+To run cypress E2E tests execute the following command:
+```bash
+npm run cypress:run:e2e:local
+```
+> Tests should be runned on clean environment
 ## Generating a new SSH key
 
 Execute the following command to generate a new SSH key
@@ -136,3 +147,4 @@ Paste VM ip address to "Remote host". IP address can be found on [VM page](http:
 Select "Specify username" and write ubuntu  
 Open "Advanced SSH Settings" then click "Use private key" and select vm-key(without .pub) file that was created in opennebula-in-docker-experimental repo folder  
 Click "Ok"  
+

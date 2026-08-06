@@ -4,13 +4,8 @@ on:
   push:
 
 jobs:
-  # install-cypress:
-  #   uses: ./.github/workflows/.reusable-install-cypress.yml
-
   e2e-tests:
     runs-on: ubuntu-24.04
-    # needs:
-    #   - install-cypress
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,9 +23,6 @@ jobs:
           IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$CID")
           echo "OPENNEBULA_IP=$IP" >> "$GITHUB_ENV"
 
-      - name: Check tests folder
-        run: ls /home/runner/work/opennebula-in-docker-experimental/opennebula-in-docker-experimental/cypress/e2e
-
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
         with:
@@ -38,6 +30,8 @@ jobs:
           browser: electron
         env:
           CYPRESS_BASE_URL: http://${{ env.OPENNEBULA_IP }}:2616
+          USER_LOGIN: oneadmin
+          USER_PASSWORD: admin
 
       - name: Upload videos of tests failed
         uses: actions/upload-artifact@v4
