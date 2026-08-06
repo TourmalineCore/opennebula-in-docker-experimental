@@ -1,7 +1,8 @@
 name: E2E Tests in PR
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   e2e-tests:
