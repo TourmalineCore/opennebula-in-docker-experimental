@@ -1,21 +1,13 @@
 describe('OpenNebula Happy Path', () => {});
 
-/* ==== Test Created with Cypress Studio ==== */
-it('test', function() {
-  /* ==== Generated with Cypress Studio ==== */
+it('Create Host, Image, Network, VM Template and VM', function() {
 
-
+  /* ==== Auth ==== */
   cy.visit('/fireedge/sunstone');
-
   cy.get('[data-cy="login-user"]').type("oneadmin");
-
   cy.get('[data-cy="login-token"]').type("admin");
-
   cy.get('[data-cy="login-button"]').click();
-  /* ==== End Cypress Studio ==== */
 
-
-  /* ==== Generated with Cypress Studio ==== */
   /* ==== Host ==== */
   cy.get('.css-1fgrji7 > .MuiButtonBase-root > svg').click();
   cy.get('[data-cy="infrastructure"] > .MuiTypography-root').click();
@@ -28,15 +20,13 @@ it('test', function() {
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('.css-1qr2nml').click();
   cy.get('[data-cy="stepper-next-button"]').click();
-  /* ==== End Cypress Studio ==== */
 
-  /* ==== Generated with Cypress Studio ==== */
   /* ==== Image ==== */
   cy.get('.css-1fgrji7 > .MuiButtonBase-root > svg').click();
   cy.get('[data-cy="storage"] > .MuiTypography-root').click();
   cy.get('[style="min-height: 0px; height: auto; transition-duration: 324ms;"] > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > .MuiList-root > :nth-child(2) > .MuiListItemText-root > [data-cy="main-menu-item-text"]').click();
   cy.get('[data-cy="action-image_create_dialog"]').click();
-  cy.get('[data-cy="general-NAME"]').type('Ubuntu 24.04 Server Image');
+  cy.get('[data-cy="general-NAME"]').type('Ubuntu Server 24.04 Image');
   cy.get('[data-cy="general-PATH"]').type('https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-amd64.img');
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="datastore-1"]').click();
@@ -44,10 +34,7 @@ it('test', function() {
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.url().should('eq', `${cy.config('baseUrl')}/fireedge/sunstone/image`);
-  /* ==== End Cypress Studio ==== */
 
-
-  /* ==== Generated with Cypress Studio ==== */
   /* ==== Network ==== */
   cy.get('.css-1fgrji7 > .MuiButtonBase-root > svg').click();
   cy.get('[data-cy="networks"] > .MuiTypography-root').click();
@@ -80,11 +67,8 @@ it('test', function() {
   cy.get('[data-cy^="text-name"]').click().type('BRIDGE_TYPE');
   cy.get('[data-cy^="text-value"]').click().type('linux');
   cy.get('[data-cy="stepper-next-button"]').click();
-  /* ==== End Cypress Studio ==== */
 
-
-
-  /* ==== Generated with Cypress Studio ==== */
+  /* ==== VM Template and VM ==== */
   cy.get('.css-1fgrji7 > .MuiButtonBase-root > svg').click();
   cy.get('[data-cy="templates"] > .MuiTypography-root').click();
   cy.get('[style="min-height: 0px; height: auto; transition-duration: 281ms;"] > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > .MuiList-root > :nth-child(1) > .MuiListItemText-root > [data-cy="main-menu-item-text"]').click();
@@ -104,6 +88,7 @@ it('test', function() {
   cy.get('[data-cy="attach-image"] > .MuiTypography-root').click();
   cy.get('[data-cy="name"]').click();
   cy.get('.MuiDialogContent-root > .css-b1629l > .css-gro1cc > [data-cy="stepper-next-button"]').click();
+  // This step was added because after `Attach image` step we got `Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'reduce')` error
   cy.on('uncaught:exception', (err, runnable) => {
     return false
   })
@@ -120,9 +105,8 @@ it('test', function() {
   cy.get('[data-cy="nic0"] > .PrivateSwitchBase-input').check();
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="stepper-next-button"]').click();
-  cy.get('.css-1yxgodj').click();
+  cy.get('[data-cy="template-0"]').click();
   cy.get('[data-cy="action-instantiate_dialog"] > svg').click();
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="stepper-next-button"]').click();
-  /* ==== End Cypress Studio ==== */
 });
