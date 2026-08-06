@@ -1,29 +1,3 @@
-install:
-	apt-get update
-	
-	apt-get -y install gnupg wget apt-transport-https
-
-	wget -q -O- https://downloads.opennebula.io/repo/repo2.key | gpg --dearmor --yes --output /etc/apt/keyrings/opennebula.gpg
-
-	echo "deb [signed-by=/etc/apt/keyrings/opennebula.gpg] https://downloads.opennebula.io/repo/7.4/Ubuntu/24.04 stable opennebula" > /etc/apt/sources.list.d/opennebula.list
-	apt-get update
-
-
-# This step was added to fix error "Failed to open path '/var/lock': No such file or directory" during opennebula packages installation
-# /var/lock is a symlink to /run/lock
-	mkdir -p /run/lock
-
-	chmod 777 /run/lock
-
-# logrotate was installed to fix error "Exec command does not exist: (ExecStartPre) /usr/sbin/logrotate" 
-# that was caused during "python3 systemctl3.py start opennebula"
-	apt install -y logrotate
-	
-	apt-get -y install opennebula opennebula-fireedge opennebula-gate opennebula-flow opennebula-node-kvm
-
-	sudo usermod -aG libvirt,kvm,sgx oneadmin
-
-
 start:
 
 # I noticed that in documentation(https://docs.opennebula.io/7.0/software/installation_process/manual_installation/kvm_node_installation/)
@@ -64,9 +38,6 @@ start:
 
 	python3 systemctl3.py start opennebula-guacd
 	
-# 	# Use node 20 to run fireedge
-# 	sed -i 's|exec node |exec /usr/bin/node |' /lib/systemd/system/opennebula-fireedge.service
-
 	python3 systemctl3.py start opennebula-fireedge
 
 	oneuser passwd oneadmin admin && echo oneadmin:admin > /var/lib/one/.one/one_auth
