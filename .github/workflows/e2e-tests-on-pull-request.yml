@@ -1,0 +1,44 @@
+name: E2E Tests in PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start OpenNebula
+        uses: devcontainers/ci@v0.3
+        with:
+          runCmd: |
+            make start --always-make --ignore-errors
+          push: never
+
+      - name: Get OpenNebula IP
+        run: |
+          CID=$(docker ps -q)
+          IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$CID")
+          echo "OPENNEBULA_IP=$IP" >> "$GITHUB_ENV"
+
+      - name: Cypress run e2e tests
+        uses: cypress-io/github-action@v6
+        with:
+          wait-on: "http://${{ env.OPENNEBULA_IP }}:2616"
+          browser: electron
+        env:
+          CYPRESS_BASE_URL: http://${{ env.OPENNEBULA_IP }}:2616
+          USER_LOGIN: oneadmin
+          USER_PASSWORD: admin
+
+      - name: Upload videos of tests failed
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-videos
+          path: |
+            cypress/videos/*.mp4
+            cypress/screenshots/**/*.png

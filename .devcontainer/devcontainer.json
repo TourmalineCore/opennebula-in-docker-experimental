@@ -1,0 +1,30 @@
+{
+	"name": "Existing Dockerfile",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"forwardPorts": [
+		6080,
+		5901,
+		2616
+	],
+	"runArgs": [
+		// "--network=host",
+		"--device=/dev/kvm",
+		"--privileged",
+		"--cgroupns=host",
+		"--tmpfs=/run",
+		"--tmpfs=/tmp",
+		"--volume=/sys/fs/cgroup:/sys/fs/cgroup:rw"
+	],
+	"containerEnv": {
+		// https://stackoverflow.com/questions/76555858/how-to-run-cypress-in-interactive-mode-in-a-devcontainer-on-windows-with-docker
+		"CHOKIDAR_USEPOLLING": "true"
+	},
+	"remoteEnv": {
+		// https://stackoverflow.com/q/65343518
+		// the original host directory which is needed for volume mount commands from inside the container (Docker in Docker)
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	},
+	"remoteUser": "root"
+}

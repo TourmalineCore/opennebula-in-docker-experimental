@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:open:e2e": "cypress open --e2e --browser electron",
+    "cypress:run:e2e": "cypress run --e2e",
+    "cypress:open:e2e:local": "cypress open --e2e --browser electron --config-file cypress.config.local.ts",
+    "cypress:run:e2e:local": "cypress run --e2e --config-file cypress.config.local.ts"
+  },
+  "devDependencies": {
+    "cypress": "^14.2.0",
+    "typescript": "^5.9.3"
+  }
+}
