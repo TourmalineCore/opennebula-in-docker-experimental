@@ -18,7 +18,7 @@ it('Create Host, Image, Network, VM Template and VM', function() {
   cy.get('[data-cy="general-information-hostname"]').clear();
   cy.get('[data-cy="general-information-hostname"]').type('localhost');
   cy.get('[data-cy="stepper-next-button"]').click();
-  cy.get('.css-1qr2nml').click();
+  cy.get('[data-cy="cluster-0"]').click();
   cy.get('[data-cy="stepper-next-button"]').click();
 
   /* ==== Image ==== */
@@ -33,7 +33,7 @@ it('Create Host, Image, Network, VM Template and VM', function() {
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="stepper-next-button"]').click();
-  cy.url().should('eq', `${cy.config('baseUrl')}/fireedge/sunstone/image`);
+  cy.url({ timeout: 10000 }).should('eq', `${cy.config('baseUrl')}/fireedge/sunstone/image`);
 
   /* ==== Network ==== */
   cy.get('.css-1fgrji7 > .MuiButtonBase-root > svg').click();
@@ -109,4 +109,30 @@ it('Create Host, Image, Network, VM Template and VM', function() {
   cy.get('[data-cy="action-instantiate_dialog"] > svg').click();
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="stepper-next-button"]').click();
+  waitForVmReady();
+  cy.get('[data-cy="0-vnc"]').click()
+
 });
+
+
+function waitForVmReady(attempt = 0) {
+  const maxAttempts = 20;  
+  const delay = 10000; 
+  cy.get('[data-cy="refresh"]').click();
+
+  cy.get('body').then(($body) => {
+    const vncButton = $body.find('[data-cy="0-vnc"]');
+
+    if (vncButton.length && vncButton.is(':visible')) {
+      cy.wrap(vncButton).should('be.visible');
+      return;
+    }
+
+    if (attempt >= maxAttempts) {
+      throw new Error('VM VNC button did not appear in expected time');
+    }
+
+    cy.wait(delay);
+    waitForVmReady(attempt + 1);
+  });
+}
