@@ -15,12 +15,12 @@ it('Create Host, Image, Network, VM Template and VM', function() {
   cy.get(':nth-child(5) > .MuiCollapse-root > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > .MuiList-root > :nth-child(3) > [data-cy="main-menu-item"]').click();
   cy.get('[data-cy="action-create_dialog"]').click();
   cy.get('[value="kvm"]').click();
-  cy.get('[data-cy="general-information-hostname"]').clear();
   cy.get('[data-cy="general-information-hostname"]').type('localhost');
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.wait(2000);
   cy.contains('default').click();
   cy.get('[data-cy="stepper-next-button"]').click();
+  cy.url({ timeout: 10000 }).should('eq', `${cy.config('baseUrl')}/fireedge/sunstone/host`);
 
   /* ==== Image ==== */
   cy.get('.sidebar-header-logo').trigger('mouseover');
@@ -34,6 +34,7 @@ it('Create Host, Image, Network, VM Template and VM', function() {
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="stepper-next-button"]').click();
+  cy.get('.snackbar-close-button > .MuiButton-root').click();
   cy.url({ timeout: 10000 }).should('eq', `${cy.config('baseUrl')}/fireedge/sunstone/image`);
 
   /* ==== Network ==== */
@@ -60,6 +61,11 @@ it('Create Host, Image, Network, VM Template and VM', function() {
   cy.get('[data-cy="context-METHOD"]').click();
   cy.contains('static (Based on context)').click();
   cy.get('[data-cy="stepper-next-button"]').click();
+  cy.get('.snackbar-close-button > .MuiButton-root').click();
+  cy.url({ timeout: 10000 }).should('eq', `${cy.config('baseUrl')}/fireedge/sunstone/virtual-network`);
+  cy.get('[data-cy="refresh"]').click();
+  cy.contains('Private Network').click();
+  
 
   /* ==== VM Template and VM ==== */
   cy.get('.sidebar-header-logo').trigger('mouseover');
@@ -94,6 +100,7 @@ it('Create Host, Image, Network, VM Template and VM', function() {
   cy.get('[data-cy="tab-booting"]').click();
   cy.get('[data-cy="disk0"] > .boot-order-checkbox > .MuiFormControlLabel-root > .MuiCheckbox-root > .checkbox-input').check();
   cy.get('[data-cy="nic0"] > .boot-order-checkbox > .MuiFormControlLabel-root > .MuiCheckbox-root > .checkbox-input').check();
+  cy.get('.snackbar-close-button > .MuiButton-root').click();
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="stepper-next-button"]').click();
   cy.get('[data-cy="template-0"]').click();
