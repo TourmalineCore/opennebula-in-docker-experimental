@@ -59,7 +59,7 @@ RUN rm -f /lib/systemd/system/systemd*udev* \
 RUN apt-get update \
     && apt-get -y install gnupg wget apt-transport-https \
     && wget -q -O- https://downloads.opennebula.io/repo/repo2.key | gpg --dearmor --yes --output /etc/apt/keyrings/opennebula.gpg \
-    && echo "deb [signed-by=/etc/apt/keyrings/opennebula.gpg] https://downloads.opennebula.io/repo/7.0/Ubuntu/24.04 stable opennebula" > /etc/apt/sources.list.d/opennebula.list \
+    && echo "deb [signed-by=/etc/apt/keyrings/opennebula.gpg] https://downloads.opennebula.io/repo/7.4/Ubuntu/24.04 stable opennebula" > /etc/apt/sources.list.d/opennebula.list \
 	&& apt-get update
 
 RUN mkdir -p /run/lock \
